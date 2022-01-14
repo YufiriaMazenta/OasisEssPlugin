@@ -1,0 +1,54 @@
+template_shaped:
+  #合成表的命名空间ID
+  key: 'oasis.recipe.template'
+  #合成表的合成物品
+  result: 'NETHER_STAR'
+  #合成表合成物品的数量
+  resultAmount: 1
+  #合成物品的自定义名字,为none或者为空时不自定义名称
+  customName: 'Template Item'
+  #合成表的类型,shaped为有序,shapeless为无序
+  type: 'shaped'
+  #合成表的合成物品
+  #1 2 3
+  #4 5 6
+  #7 8 9
+  items:
+    - BEDROCK
+    - AIR
+    - AIR
+    - AIR
+    - AIR
+    - AIR
+    - BEDROCK
+    - AIR
+    - AIR
+
+template_shapeless:
+  #合成表的命名空间ID
+  key: 'oasis.recipe.template2'
+  #合成表的合成物品
+  result: 'NETHER_STAR'
+  #合成表合成物品的数量
+  resultAmount: 1
+  #合成物品的自定义名字,为none或者为空时不自定义名称
+  customName: 'Template Item'
+  #合成表的类型,shaped为有序,shapeless为无序
+  type: 'shapeless'
+  #合成表的合成物品
+  #1 2 3
+  #4 5 6
+  #7 8 9
+  items:
+    - BEDROCK
+
+template_furnace:
+  key: 'oasis.recipe.template3'
+  result: 'NETHER_STAR'
+  resultAmount: 1
+  customName: 'TEMPLATE'
+  type: 'furnace'
+  items:
+    - BEDROCK
+  exp: 0
+  time: 10

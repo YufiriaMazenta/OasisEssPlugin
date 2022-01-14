@@ -1,0 +1,42 @@
+modules:
+  keepInventory:
+    enable: true
+  creeperWarning:
+    enable: true
+    x: 5
+    y: 5
+    z: 5
+  auth:
+    enable: true
+    minPwdLength: 6
+    maxTryPwdNum: 5
+    whitelistCommands:
+      - '/l'
+      - '/login'
+      - '/reg'
+      - '/yz'
+      - '/verify'
+  broadcast:
+    messages:
+      - 'broadcast'
+    interval: 300
+  dateStartEvent:
+    enable: true
+  hat:
+    enable: true
+  shield:
+    prop: 0.75
+    effect: 'WEAKNESS'
+    effectTime: 2
+    effectLevel: 2
+  customExpLvl:
+    enable: true
+    perLvlExp: 200
+
+sounds:
+  soundRadius: 5
+  attack_ironSword: 'entity.zombie.attack_iron_door'
+  attack_diamondSword: 'entity.blaze.hurt'
+  drawSword: 'entity.drowned.shoot'
+  ignite_campfire: 'entity.generic.burn'
+  shield_block: 'item.trident.hit_ground'

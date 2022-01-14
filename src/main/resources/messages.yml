@@ -1,0 +1,46 @@
+reload: '&aPlugin reloaded'
+notPlayer: '&cThe Command must be a player to use'
+keepInventory:
+  open:
+    self: '&a&lKeepInventory On'
+    broadcast: '&a&l%player% Opened KeepInventory'
+    commands:
+      - 'lp user %player% permission set oasis.perm.keep true'
+  close:
+    self: '&c&lKeepInventory Off'
+    broadcast: '&c&l%player% Closed KeepInventory'
+    commands:
+      - 'lp user %player% permission set oasis.perm.keep false'
+creeperWarning: '&c&lThere is a Creeper near you'
+auth:
+  noReg: 'You have not registered yet, please use "/reg <email> <password>" command to register'
+  reg:
+    lengthError: 'Your must input an e-mail account to bind your minecraft account!'
+    success: 'Successfully send your code to your email, please use "/yz <code>" command to register in 5 min'
+    notEmail: 'Your input maybe not a email'
+    hasReg: 'You have already registered'
+    pwdLengthError: 'The length of password must more than 6'
+    emailHasReg: 'Your email has already been registered, please change your email'
+  check:
+    noCode: 'The code maybe not be sent or it expired'
+    lengthError: 'Your must input the code to check your account'
+    wrong: 'The code may be wrong'
+    success: 'You are successfully to check the code, enjoy your games!'
+  login:
+    lengthError: 'Your must input the code to login'
+    wrong: 'The password may be wrong'
+    success: 'You are successfully to login, enjoy your games!'
+    noLogin: 'You have not logged in, please log in with the /l password'
+    hasLogin: 'You have logged in'
+    tryNumMax: 'You have tried to log in multiple times'
+recipes:
+  customName:
+    copperPickaxe: 'Iron-plated copper pickaxe'
+    copperAxe: 'Iron-plated copper axe'
+    copperSword: 'Iron-plated copper sword'
+  noEnoughExpTitle: 'Your level is not enough'
+  noEnoughExpSubTitle: 'It cost %s% level'
+event:
+  dateStart: 'A new day begins!'
+commands:
+  hat: '&Success'
