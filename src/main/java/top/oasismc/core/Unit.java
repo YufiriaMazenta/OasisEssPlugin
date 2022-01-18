@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.oasismc.api.config.ConfigFile;
 import top.oasismc.api.nms.actionbar.ActionBarSender;
+import top.oasismc.modules.anvil.AnvilListener;
 import top.oasismc.modules.auth.VerifyCommand;
 import top.oasismc.modules.auth.LoginCommand;
 import top.oasismc.modules.auth.LoginListener;
@@ -109,6 +110,7 @@ public final class Unit extends JavaPlugin {
         regAuth(getConfig().getBoolean("modules.auth.enable", true));
         regRandomEvent(getConfig().getBoolean("modules.dateStartEvent.enable", true));
         regHatCmd(getConfig().getBoolean("modules.hat.enable", true));
+        regAnvilListener(getConfig().getBoolean("modules.anvilColor.enable", true));
 
         addRecipes();
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
@@ -117,6 +119,11 @@ public final class Unit extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
         //Debug
         Bukkit.getPluginManager().registerEvents(ShieldListener.getInstance(), this);
+    }
+
+    private void regAnvilListener(boolean load) {
+        if (load)
+            Bukkit.getPluginManager().registerEvents(AnvilListener.getAnvilListener(), this);
     }
 
     private void regHatCmd(boolean load) {

@@ -32,6 +32,8 @@ modules:
   customExpLvl:
     enable: true
     perLvlExp: 200
+  anvilColor:
+    enable: true
 
 sounds:
   soundRadius: 5

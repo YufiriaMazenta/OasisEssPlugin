@@ -6,7 +6,7 @@
 
     <groupId>top.oasismc</groupId>
     <artifactId>OasisEss</artifactId>
-    <version>0.1.3.20220111_beta</version>
+    <version>0.1.4.20220118_beta</version>
     <packaging>jar</packaging>
 
     <name>OasisEssentials</name>
