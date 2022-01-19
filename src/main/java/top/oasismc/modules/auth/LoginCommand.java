@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 import static top.oasismc.modules.auth.VerifyCommand.getEmailsConfig;
 import static top.oasismc.modules.auth.LoginListener.getPlayerIsLoginMap;
 

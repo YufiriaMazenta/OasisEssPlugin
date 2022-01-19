@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collections;
 import java.util.List;
 
-import static top.oasismc.core.Unit.sendMsg;
+import static top.oasismc.OasisEss.sendMsg;
 
 public class HatCommand implements TabExecutor {
 

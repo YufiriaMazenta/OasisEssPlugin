@@ -5,8 +5,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-import static top.oasismc.core.Unit.color;
-import static top.oasismc.core.Unit.getPlugin;
+import static top.oasismc.OasisEss.color;
+import static top.oasismc.OasisEss.getPlugin;
 
 public class AutoBroadCastRunnable extends BukkitRunnable {
 

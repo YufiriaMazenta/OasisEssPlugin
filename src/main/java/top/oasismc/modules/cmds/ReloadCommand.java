@@ -1,7 +1,6 @@
-package top.oasismc.core;
+package top.oasismc.modules.cmds;
 
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,13 +10,12 @@ import top.oasismc.modules.utils.message.broadcast.AutoBroadCastRunnable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static top.oasismc.api.customrecipe.RecipeManager.getKeyList;
 import static top.oasismc.api.customrecipe.RecipeManager.loadRecipesFromConfig;
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 
-public class PluginReload implements CommandExecutor, TabCompleter {
+public class ReloadCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {

@@ -9,7 +9,7 @@ import top.oasismc.api.email.EmailSender;
 
 import java.util.*;
 
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 
 public class RegCommand implements TabExecutor {
 
@@ -48,6 +48,9 @@ public class RegCommand implements TabExecutor {
         if (args[1].length() <= getPlugin().getConfig().getInt("modules.auth.minPwdLength", 6)) {
             sendMsg(sender, "auth.reg.pwdLengthError");
             return true;
+        }
+        if (codes.containsKey(sender.getName())) {
+            sendMsg(sender, "auth.reg.hasSent");
         }
         try {//尝试发送邮件
             String code = EmailSender.send((Player) sender, args[0]);

@@ -1,4 +1,4 @@
-package top.oasismc.core;
+package top.oasismc;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -11,6 +11,7 @@ import top.oasismc.modules.auth.LoginCommand;
 import top.oasismc.modules.auth.LoginListener;
 import top.oasismc.modules.auth.RegCommand;
 import top.oasismc.modules.cmds.HatCommand;
+import top.oasismc.modules.cmds.ReloadCommand;
 import top.oasismc.modules.combat.AttackListener;
 import top.oasismc.modules.combat.ShieldListener;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
@@ -29,7 +30,7 @@ import java.util.Objects;
 
 import static org.bukkit.ChatColor.*;
 
-public final class Unit extends JavaPlugin {
+public final class OasisEss extends JavaPlugin {
 
     private static JavaPlugin plugin;
     private static ConfigFile textConfig;
@@ -37,7 +38,7 @@ public final class Unit extends JavaPlugin {
     private static List<ConfigFile> configs;
     private static AutoBroadCastRunnable broadCastRunnable;
 
-    public Unit() {
+    public OasisEss() {
         setPlugin(this);
     }
 
@@ -49,7 +50,7 @@ public final class Unit extends JavaPlugin {
         textConfig = new ConfigFile("messages.yml");
         configs.add(textConfig);
 
-        PluginReload reload = new PluginReload();
+        ReloadCommand reload = new ReloadCommand();
         Objects.requireNonNull(Bukkit.getPluginCommand("oasis")).setExecutor(reload);
         Objects.requireNonNull(Bukkit.getPluginCommand("oasis")).setTabCompleter(reload);
 
@@ -177,7 +178,7 @@ public final class Unit extends JavaPlugin {
     }
 
     private static void setPlugin(JavaPlugin plugin) {
-        Unit.plugin = plugin;
+        OasisEss.plugin = plugin;
     }
 
     public void addRecipes() {
@@ -197,7 +198,7 @@ public final class Unit extends JavaPlugin {
 
 
     public static void setBroadCastRunnable(AutoBroadCastRunnable broadCastRunnable) {
-        Unit.broadCastRunnable = broadCastRunnable;
+        OasisEss.broadCastRunnable = broadCastRunnable;
     }
 
 

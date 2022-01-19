@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 
 public class ConfigFile {
 

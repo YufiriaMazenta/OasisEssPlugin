@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import top.oasismc.api.customrecipe.RecipeManager;
 
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 
 //待弃用
 public class CopperRecipes {

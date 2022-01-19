@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static top.oasismc.core.Unit.getPlugin;
+import static top.oasismc.OasisEss.getPlugin;
 
 
 public class AttackListener implements Listener {

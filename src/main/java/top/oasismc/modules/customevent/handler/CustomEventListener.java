@@ -6,7 +6,7 @@ import top.oasismc.modules.customevent.events.AsyncDateStartEvent;
 
 import java.util.Random;
 
-import static top.oasismc.core.Unit.bcByKey;
+import static top.oasismc.OasisEss.bcByKey;
 
 public class CustomEventListener implements Listener {
 

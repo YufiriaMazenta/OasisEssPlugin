@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 
 public class RecipeManager {
 

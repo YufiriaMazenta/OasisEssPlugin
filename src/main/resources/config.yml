@@ -29,9 +29,6 @@ modules:
     effect: 'WEAKNESS'
     effectTime: 2
     effectLevel: 2
-  customExpLvl:
-    enable: true
-    perLvlExp: 200
   anvilColor:
     enable: true
 

@@ -18,6 +18,7 @@ auth:
     lengthError: 'Your must input an e-mail account to bind your minecraft account!'
     success: 'Successfully send your code to your email, please use "/yz <code>" command to register in 5 min'
     notEmail: 'Your input maybe not a email'
+    hasSent: 'Email has been sent, please try again in five minutes'
     hasReg: 'You have already registered'
     pwdLengthError: 'The length of password must more than 6'
     emailHasReg: 'Your email has already been registered, please change your email'

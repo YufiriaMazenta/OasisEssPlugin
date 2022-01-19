@@ -8,7 +8,7 @@ import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.oasismc.modules.customevent.events.AsyncDateStartEvent;
 
-import static top.oasismc.core.Unit.getPlugin;
+import static top.oasismc.OasisEss.getPlugin;
 
 public class CustomEventTrigger implements Listener {
 

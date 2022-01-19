@@ -9,8 +9,8 @@ import top.oasismc.api.config.ConfigFile;
 import java.util.Collections;
 import java.util.List;
 
-import static top.oasismc.core.Unit.getConfigs;
-import static top.oasismc.core.Unit.sendMsg;
+import static top.oasismc.OasisEss.getConfigs;
+import static top.oasismc.OasisEss.sendMsg;
 import static top.oasismc.modules.auth.RegCommand.*;
 
 public class VerifyCommand implements TabExecutor {
@@ -42,9 +42,11 @@ public class VerifyCommand implements TabExecutor {
             List<String> hasRegEmails = emailsConfig.getConfig().getStringList("hasRegEmails");
             hasRegEmails.add(getTempEmails().get(sender.getName()));
             emailsConfig.getConfig().set("hasRegEmails", hasRegEmails);
-            LoginListener.getPlayerIsLoginMap().put(sender.getName(), true);
             emailsConfig.saveConfig();
+            LoginListener.getPlayerIsLoginMap().put(sender.getName(), true);
+            getCodes().remove(sender.getName());
             getTempEmails().remove(sender.getName());
+            getTempPwd().remove(sender.getName());
             sendMsg(sender, "auth.check.success");
         }
         return true;

@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static top.oasismc.core.Unit.getPlugin;
+import static top.oasismc.OasisEss.getPlugin;
 
 public class IgniteListener implements Listener {
 

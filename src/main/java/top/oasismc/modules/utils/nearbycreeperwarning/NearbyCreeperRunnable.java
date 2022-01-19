@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static top.oasismc.core.Unit.*;
+import static top.oasismc.OasisEss.*;
 
 public class NearbyCreeperRunnable {
 

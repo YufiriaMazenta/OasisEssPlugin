@@ -9,8 +9,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.util.Set;
 
 import static top.oasismc.api.customrecipe.RecipeManager.getRecipeConfig;
-import static top.oasismc.core.Unit.color;
-import static top.oasismc.core.Unit.getTextConfig;
+import static top.oasismc.OasisEss.color;
+import static top.oasismc.OasisEss.getTextConfig;
 
 public class RecipeExpCheckListener implements Listener {
 
