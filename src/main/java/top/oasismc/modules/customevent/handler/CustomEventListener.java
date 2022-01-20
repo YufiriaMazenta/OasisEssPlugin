@@ -10,14 +10,22 @@ import static top.oasismc.OasisEss.bcByKey;
 
 public class CustomEventListener implements Listener {
 
-    Random random;
+    private final Random random;
+    private static CustomEventListener LISTENER;
 
-    public CustomEventListener() {
+    static {
+        LISTENER = new CustomEventListener();
+    }
+
+    public static CustomEventListener getListener() {
+        return LISTENER;
+    }
+    private CustomEventListener() {
         random = new Random();
     }
 
     @EventHandler
-    public void dateStart(AsyncDateStartEvent event) {
+    public void onDateStart(AsyncDateStartEvent event) {
         int eventId = random.nextInt(21);
         switch (eventId) {
             case 0:

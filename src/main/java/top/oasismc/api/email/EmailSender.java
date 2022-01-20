@@ -9,6 +9,8 @@ import javax.mail.internet.MimeMessage;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
+import static top.oasismc.OasisEss.*;
+
 public class EmailSender {
 
     public static String send(Player player, String mail) {
@@ -53,9 +55,11 @@ public class EmailSender {
             for (int i = 0; i < 6; i++) {
                 code.append((int) (Math.random() * 7));
             }
-            message.setText("尊敬的" + player.getName() + ",你的验证码为" + code);
+            String text = getTextConfig().getConfig().getString("auth.emailFormat", "%code%");
+            text = text.replace("%code%", code).replace("%player%", player.getName());
+            message.setText(text);
             Transport.send(message);
-//            System.out.println("Send Email to " + mail + " successfully");
+            info("Send Email to " + mail + " successfully");
             return String.valueOf(code);
         }catch (MessagingException mex) {
             mex.printStackTrace();

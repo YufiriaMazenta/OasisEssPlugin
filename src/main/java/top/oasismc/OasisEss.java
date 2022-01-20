@@ -12,6 +12,7 @@ import top.oasismc.modules.auth.LoginListener;
 import top.oasismc.modules.auth.RegCommand;
 import top.oasismc.modules.cmds.HatCommand;
 import top.oasismc.modules.cmds.ReloadCommand;
+import top.oasismc.modules.cmds.ShutdownCommand;
 import top.oasismc.modules.combat.AttackListener;
 import top.oasismc.modules.combat.ShieldListener;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
@@ -21,7 +22,7 @@ import top.oasismc.modules.recipes.RecipeExpCheckListener;
 import top.oasismc.modules.utils.ignite.IgniteListener;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryCommand;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryListener;
-import top.oasismc.modules.utils.message.broadcast.AutoBroadCastRunnable;
+import top.oasismc.modules.utils.message.AutoBroadCastRunnable;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public final class OasisEss extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.resetRecipes();
+        Bukkit.getScheduler().cancelTasks(this);
         info(RED + "Plugin Disabled");
     }
 
@@ -112,7 +114,7 @@ public final class OasisEss extends JavaPlugin {
         regRandomEvent(getConfig().getBoolean("modules.dateStartEvent.enable", true));
         regHatCmd(getConfig().getBoolean("modules.hat.enable", true));
         regAnvilListener(getConfig().getBoolean("modules.anvilColor.enable", true));
-
+        regShutdownCmd();
         addRecipes();
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
 
@@ -137,9 +139,14 @@ public final class OasisEss extends JavaPlugin {
 
     private void regRandomEvent(boolean load) {
         if (load) {
-            Bukkit.getPluginManager().registerEvents(new CustomEventTrigger(), this);
-            Bukkit.getPluginManager().registerEvents(new CustomEventListener(), this);
+            Bukkit.getPluginManager().registerEvents(CustomEventTrigger.getTrigger(), this);
+            Bukkit.getPluginManager().registerEvents(CustomEventListener.getListener(), this);
         }
+    }
+
+    private void regShutdownCmd() {
+        Bukkit.getPluginCommand("shutdown").setExecutor(ShutdownCommand.getCommand());
+        Bukkit.getPluginCommand("shutdown").setTabCompleter(ShutdownCommand.getCommand());
     }
 
     private void regKeepInventory(boolean load) {

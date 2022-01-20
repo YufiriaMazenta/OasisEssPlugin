@@ -1,4 +1,4 @@
-package top.oasismc.modules.utils.message.broadcast;
+package top.oasismc.modules.utils.message;
 
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;

@@ -12,7 +12,17 @@ import static top.oasismc.OasisEss.getPlugin;
 
 public class CustomEventTrigger implements Listener {
 
-    public CustomEventTrigger() {
+    private static CustomEventTrigger trigger;
+
+    static {
+        trigger = new CustomEventTrigger();
+    }
+
+    public static CustomEventTrigger getTrigger() {
+        return trigger;
+    }
+
+    private CustomEventTrigger() {
         startDateStartEventTrigger();
     }
 

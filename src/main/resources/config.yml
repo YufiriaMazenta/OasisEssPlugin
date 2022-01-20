@@ -32,6 +32,11 @@ modules:
   anvilColor:
     enable: true
 
+honorSword:
+  lore: '&8Honor Sword'
+  intervalTick: 11
+  cooling: 2
+
 sounds:
   soundRadius: 5
   attack_ironSword: 'entity.zombie.attack_iron_door'

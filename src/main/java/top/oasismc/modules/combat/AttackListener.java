@@ -14,23 +14,30 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
+import static top.oasismc.OasisEss.color;
 import static top.oasismc.OasisEss.getPlugin;
 
 
 public class AttackListener implements Listener {
 
     private static final AttackListener attackListener;
+    private Map<UUID, Integer> playerAttackMap;
 
     static {
         attackListener = new AttackListener();
     }
 
-    private AttackListener() {}
+    private AttackListener() {
+        playerAttackMap = new ConcurrentHashMap<>();
+    }
 
     public static AttackListener getInstance() {
         return attackListener;
@@ -42,25 +49,44 @@ public class AttackListener implements Listener {
         return itemDurabilityMap;
     }
 
-//    //实现吃东西被打打断
-//    @EventHandler(priority = EventPriority.HIGHEST)
-//    public void noEat(EntityDamageByEntityEvent event) {
-//        if (event.getEntity() instanceof Player player) {
-//            if (player.getItemInUse() != null) {
-//                ItemStack main = player.getInventory().getItemInMainHand();
-//                ItemStack off = player.getInventory().getItemInOffHand();
-//                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-//                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
-//                new BukkitRunnable(){
-//                    @Override
-//                    public void run() {
-//                        player.getInventory().setItemInMainHand(main);
-//                        player.getInventory().setItemInOffHand(off);
-//                    }
-//                }.runTaskLaterAsynchronously(getPlugin(), 0);
-//            }
-//        }
-//    }
+
+    @EventHandler
+    public void onPlayerAttack(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player))
+            return;
+        ItemStack item = ((Player) event.getDamager()).getInventory().getItemInMainHand();
+        if (item.getType() == Material.AIR)
+            return;
+        if (item.getItemMeta() == null)
+            return;
+        if (item.getItemMeta().getLore() == null)
+            return;
+        if (!item.getItemMeta().getLore().contains(color(getPlugin().getConfig().getString("honorSword.lore", "&8Honor Sword"))))
+            return;
+        if (playerAttackMap.getOrDefault(event.getDamager().getUniqueId(), 0) == 0) {
+            playerAttackMap.put(event.getDamager().getUniqueId(), 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    ((Player) event.getDamager()).attack(event.getEntity());
+                    ((Player) event.getDamager()).swingMainHand();
+                    if (item.getItemMeta() instanceof Damageable) {
+                        Damageable meta = (Damageable) item.getItemMeta();
+                        meta.setDamage(meta.getDamage() - 1);
+                        item.setItemMeta((ItemMeta) meta);
+                        ((Player) event.getDamager()).getInventory().setItem(EquipmentSlot.HAND, item);
+                    }
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            playerAttackMap.put(event.getDamager().getUniqueId(), 0);
+                        }
+                    }.runTaskLater(getPlugin(), getPlugin().getConfig().getInt("honorSword.cooling", 2) * 20L);
+                }
+            }.runTaskLater(getPlugin(), getPlugin().getConfig().getInt("honorSword.intervalTick", 11));
+        }
+
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void arms(EntityDamageByEntityEvent event) {

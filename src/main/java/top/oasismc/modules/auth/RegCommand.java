@@ -52,6 +52,7 @@ public class RegCommand implements TabExecutor {
         if (codes.containsKey(sender.getName())) {
             sendMsg(sender, "auth.reg.hasSent");
         }
+        args[0] = args[0].replace("@@", "@");
         try {//尝试发送邮件
             String code = EmailSender.send((Player) sender, args[0]);
             sendMsg(sender, "auth.reg.success");

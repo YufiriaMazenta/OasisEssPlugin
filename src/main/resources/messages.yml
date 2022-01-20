@@ -13,6 +13,7 @@ keepInventory:
       - 'lp user %player% permission set oasis.perm.keep false'
 creeperWarning: '&c&lThere is a Creeper near you'
 auth:
+  emailFormat: 'Dear %player%, welcome to the Oasis server to play, your verification code is %code%, and the valid time is within 5 minutes after it is issued'
   noReg: 'You have not registered yet, please use "/reg <email> <password>" command to register'
   reg:
     lengthError: 'Your must input an e-mail account to bind your minecraft account!'
@@ -45,3 +46,8 @@ event:
   dateStart: 'A new day begins!'
 commands:
   hat: '&Success'
+  shutdown:
+    title: 'The server will shutdown'
+    subtitle: '%time% seconds left'
+join: '&8&l[&a&l+&8&l] &7%player%'
+quit: '&8&l[&c&l-&8&l] &7%player%'

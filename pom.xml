@@ -11,7 +11,7 @@
 
     <name>OasisEssentials</name>
 
-    <description>A Essentials Minecraft-Server Plugin Developed by OasisGroup</description>
+    <description>A Essential Minecraft-Server Plugin Developed by OasisGroup</description>
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
