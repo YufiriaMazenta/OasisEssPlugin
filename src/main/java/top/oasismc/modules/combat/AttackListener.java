@@ -63,6 +63,8 @@ public class AttackListener implements Listener {
             return;
         if (!item.getItemMeta().getLore().contains(color(getPlugin().getConfig().getString("honorSword.lore", "&8Honor Sword"))))
             return;
+        if (Math.random() < 1 - getPlugin().getConfig().getDouble("honorSword.probability", 0.1))
+            return;
         if (playerAttackMap.getOrDefault(event.getDamager().getUniqueId(), 0) == 0) {
             playerAttackMap.put(event.getDamager().getUniqueId(), 1);
             new BukkitRunnable() {

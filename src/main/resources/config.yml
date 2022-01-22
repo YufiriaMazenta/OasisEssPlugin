@@ -36,6 +36,7 @@ honorSword:
   lore: '&8Honor Sword'
   intervalTick: 11
   cooling: 2
+  probability: 0.1
 
 sounds:
   soundRadius: 5
