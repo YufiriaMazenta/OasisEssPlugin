@@ -23,6 +23,8 @@ import top.oasismc.modules.utils.ignite.IgniteListener;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryCommand;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryListener;
 import top.oasismc.modules.utils.message.AutoBroadCastRunnable;
+import top.oasismc.modules.utils.message.DeathMsgListener;
+import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import static org.bukkit.ChatColor.*;
 
 public final class OasisEss extends JavaPlugin {
 
-    private static JavaPlugin plugin;
+    private static OasisEss plugin;
     private static ConfigFile textConfig;
     private static ActionBarSender actionBarSender;
     private static List<ConfigFile> configs;
@@ -118,6 +120,8 @@ public final class OasisEss extends JavaPlugin {
         addRecipes();
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
 
+        Bukkit.getPluginManager().registerEvents(JoinQuitMsgListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(DeathMsgListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(AttackListener.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
         //Debug
@@ -180,11 +184,11 @@ public final class OasisEss extends JavaPlugin {
     }
 
 
-    public static JavaPlugin getPlugin() {
+    public static OasisEss getPlugin() {
         return plugin;
     }
 
-    private static void setPlugin(JavaPlugin plugin) {
+    private static void setPlugin(OasisEss plugin) {
         OasisEss.plugin = plugin;
     }
 

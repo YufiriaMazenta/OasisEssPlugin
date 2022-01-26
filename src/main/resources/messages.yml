@@ -51,3 +51,4 @@ commands:
     subtitle: '%time% seconds left'
 join: '&8&l[&a&l+&8&l] &7%player%'
 quit: '&8&l[&c&l-&8&l] &7%player%'
+playerDeath: '&8&l[&c&l✘&8&l] &7%killer% &c-> &7%player%'

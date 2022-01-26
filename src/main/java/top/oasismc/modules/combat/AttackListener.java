@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static top.oasismc.OasisEss.color;
 import static top.oasismc.OasisEss.getPlugin;
-
 
 public class AttackListener implements Listener {
 
@@ -49,7 +49,7 @@ public class AttackListener implements Listener {
         return itemDurabilityMap;
     }
 
-
+    //特殊武器：荣耀之刃的监听代码
     @EventHandler
     public void onPlayerAttack(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player))
@@ -70,7 +70,8 @@ public class AttackListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    ((Player) event.getDamager()).attack(event.getEntity());
+                    Entity entity = event.getEntity();
+                    ((Player) event.getDamager()).attack(entity);
                     ((Player) event.getDamager()).swingMainHand();
                     if (item.getItemMeta() instanceof Damageable) {
                         Damageable meta = (Damageable) item.getItemMeta();

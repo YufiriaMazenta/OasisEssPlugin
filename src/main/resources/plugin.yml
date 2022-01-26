@@ -1,5 +1,5 @@
 name: OasisEss
-version: @version@
+version: ${project.version}
 main: top.oasismc.OasisEss
 api-version: 1.18
 load: STARTUP

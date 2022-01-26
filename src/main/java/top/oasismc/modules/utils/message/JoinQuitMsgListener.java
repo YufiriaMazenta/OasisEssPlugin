@@ -16,9 +16,7 @@ public class JoinQuitMsgListener implements Listener {
         listener = new JoinQuitMsgListener();
     }
 
-    private JoinQuitMsgListener() {
-        Bukkit.getPluginManager().registerEvents(this, getPlugin());
-    }
+    private JoinQuitMsgListener() {}
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -39,5 +37,7 @@ public class JoinQuitMsgListener implements Listener {
         }
         event.setQuitMessage(color(msg));
     }
+
+    public static JoinQuitMsgListener getListener() { return listener; }
 
 }
