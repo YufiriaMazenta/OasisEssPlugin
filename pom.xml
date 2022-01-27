@@ -6,7 +6,7 @@
 
     <groupId>top.oasismc</groupId>
     <artifactId>OasisEss</artifactId>
-    <version>0.1.4.22w04b</version>
+    <version>0.1.5</version>
     <packaging>jar</packaging>
 
     <name>OasisEssentials</name>
@@ -18,7 +18,7 @@
     </properties>
 
     <build>
-        <finalName>OasisEss-0.1.4</finalName>
+        <finalName>OasisEss-0.1.5</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -12,10 +12,12 @@ import static top.oasismc.OasisEss.getPlugin;
 
 public class CustomEventTrigger implements Listener {
 
-    private static CustomEventTrigger trigger;
+    private static final CustomEventTrigger trigger;
+    private static long lastTrigTime;
 
     static {
         trigger = new CustomEventTrigger();
+        lastTrigTime = System.currentTimeMillis();
     }
 
     public static CustomEventTrigger getTrigger() {
@@ -29,10 +31,14 @@ public class CustomEventTrigger implements Listener {
     @EventHandler
     public void timeSkip(TimeSkipEvent event) {
         if (event.getSkipReason() == TimeSkipEvent.SkipReason.NIGHT_SKIP) {
+            if (System.currentTimeMillis() - lastTrigTime < 10000) {
+                return;
+            }
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     Bukkit.getPluginManager().callEvent(new AsyncDateStartEvent(event.getWorld()));
+                    lastTrigTime = System.currentTimeMillis();
                 }
             }.runTaskAsynchronously(getPlugin());
         }
@@ -44,7 +50,11 @@ public class CustomEventTrigger implements Listener {
             public void run() {
                 World world = Bukkit.getServer().getWorld("world");
                 if (world.getTime() == 0) {
+                    if (System.currentTimeMillis() - lastTrigTime < 10000) {
+                        return;
+                    }
                     Bukkit.getPluginManager().callEvent(new AsyncDateStartEvent(world));
+                    lastTrigTime = System.currentTimeMillis();
                 }
             }
         }.runTaskTimerAsynchronously(getPlugin(), 1, 0);

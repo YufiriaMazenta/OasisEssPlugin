@@ -16,12 +16,16 @@ modules:
       - '/reg'
       - '/yz'
       - '/verify'
+      - '/check'
   broadcast:
     messages:
       - 'broadcast'
     interval: 300
   dateStartEvent:
     enable: true
+    spawnGiantEvent:
+      probability: 1
+
   hat:
     enable: true
   shield:
