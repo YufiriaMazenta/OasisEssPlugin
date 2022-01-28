@@ -49,13 +49,14 @@ public class CustomEventListener implements Listener {
             case 0 -> {
                 bcByKey("event.spawnGiantEvent");
                 eventSwitchMap.put(1, true);
+                return;
             }
             case 5 -> event2();
             case 10 -> event3();
             case 15 -> event4();
             case 20 -> event5();
-            default -> bcByKey("event.dateStart");
         }
+        bcByKey("event.dateStart");
     }
 
     @EventHandler
