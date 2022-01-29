@@ -5,19 +5,19 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class AsyncDateStartEvent extends Event implements Cancellable {
+public class DateStartEvent extends Event implements Cancellable {
 
     private static final HandlerList handlerList = new HandlerList();
     private final World world;
     private boolean cancel;
 
-    public AsyncDateStartEvent(World world, boolean cancel) {
-        super(true);
+    public DateStartEvent(World world, boolean cancel) {
+        super(false);
         this.world = world;
         this.cancel = cancel;
     }
 
-    public AsyncDateStartEvent(World world) {
+    public DateStartEvent(World world) {
         this(world, false);
     }
 

@@ -29,6 +29,7 @@ public class DeathMsgListener implements Listener {
 
     @EventHandler
     public void playerDeath(PlayerDeathEvent p) {
+        p.getEntity().getLocation().getChunk().unload();
         String deathMsg = OasisEss.getTextConfig().getConfig().getString("playerDeath", "");
         EntityDamageEvent event = p.getEntity().getLastDamageCause();
         String killer;

@@ -4,9 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
-import top.oasismc.modules.customevent.events.AsyncDateStartEvent;
+import top.oasismc.modules.customevent.events.DateStartEvent;
 
 import static top.oasismc.OasisEss.getPlugin;
+import static top.oasismc.OasisEss.info;
 
 public class CustomEventTrigger implements Listener {
 
@@ -30,10 +31,10 @@ public class CustomEventTrigger implements Listener {
             public void run() {
                 World world = Bukkit.getServer().getWorld("world");
                 if (world.getTime() == 5) {
-                    Bukkit.getPluginManager().callEvent(new AsyncDateStartEvent(world));
+                    Bukkit.getPluginManager().callEvent(new DateStartEvent(world));
                 }
             }
-        }.runTaskTimerAsynchronously(getPlugin(), 1, 1);
+        }.runTaskTimer(getPlugin(), 0, 1);
     }
 
 }
