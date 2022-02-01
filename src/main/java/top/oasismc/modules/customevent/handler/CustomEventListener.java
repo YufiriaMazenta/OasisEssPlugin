@@ -11,17 +11,14 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import top.oasismc.modules.customevent.events.DateStartEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static top.oasismc.OasisEss.*;
@@ -31,6 +28,7 @@ public class CustomEventListener implements Listener {
     private final Random random;
     private static final CustomEventListener LISTENER;
     private final Map<UUID, BossBar> bossBarMap;
+    private final Map<UUID, Set<String>> giantDropSkullMap;
     private BukkitRunnable giantBossBarThread;
 
     static {
@@ -45,10 +43,11 @@ public class CustomEventListener implements Listener {
     private CustomEventListener() {
         random = new Random();
         eventSwitchMap = new ConcurrentHashMap<>();
+        giantDropSkullMap = new HashMap<>();
         bossBarMap = new HashMap<>();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onDateStart(DateStartEvent event) {
         eventSwitchMap.put(1, false);
         if (giantBossBarThread != null) {
@@ -75,7 +74,26 @@ public class CustomEventListener implements Listener {
         bcByKey("event.dateStart");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void playerDeath(PlayerDeathEvent event) {
+        EntityDamageEvent e = event.getEntity().getLastDamageCause();
+        if (e == null)
+            return;
+        EntityDamageEvent.DamageCause damageCause = event.getEntity().getLastDamageCause().getCause();
+        if (!damageCause.equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK))
+            return;
+        if (((EntityDamageByEntityEvent) e ).getDamager().getType() != EntityType.GIANT)
+            return;
+        if (giantDropSkullMap.containsKey(((EntityDamageByEntityEvent) e).getDamager().getUniqueId())) {
+            giantDropSkullMap.get(((EntityDamageByEntityEvent) e).getDamager().getUniqueId()).add(event.getEntity().getName());
+        } else {
+            Set<String> tmpPList = new HashSet<>();
+            tmpPList.add(event.getEntity().getName());
+            giantDropSkullMap.put(((EntityDamageByEntityEvent) e).getDamager().getUniqueId(), tmpPList);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void randomSpawnGiant(EntitySpawnEvent event) {
         if (!eventSwitchMap.getOrDefault(1, false)) {
             return;
@@ -96,7 +114,10 @@ public class CustomEventListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onGiantCleared() {}
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onGiantDeath(EntityDeathEvent event) {
         if (event.getEntity().getType() != EntityType.GIANT)
             return;
@@ -105,6 +126,16 @@ public class CustomEventListener implements Listener {
         if (random.nextInt(0, 100) < 5) {
             event.getDrops().add(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1));
         }
+        for (String name : giantDropSkullMap.get(event.getEntity().getUniqueId())) {
+            ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
+            ItemMeta meta = skull.getItemMeta();
+            if (meta == null)
+                continue;
+            ((SkullMeta) meta).setOwningPlayer(Bukkit.getOfflinePlayer(name));
+            skull.setItemMeta(meta);
+            event.getDrops().add(skull);
+        }
+        giantDropSkullMap.remove(event.getEntity().getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.HIGH)
