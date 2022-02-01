@@ -118,7 +118,8 @@ public class CustomEventListener implements Listener {
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
             event.setCancelled(true);
             for (Entity entity : event.getEntity().getNearbyEntities(20, 20, 20)) {
-                ((LivingEntity) event.getEntity()).attack(entity);
+                if (entity instanceof Player)
+                    ((LivingEntity) event.getEntity()).attack(entity);
             }
         } else if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
             event.setDamage(event.getDamage() / 2);
