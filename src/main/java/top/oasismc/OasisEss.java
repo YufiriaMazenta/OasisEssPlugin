@@ -17,6 +17,7 @@ import top.oasismc.modules.combat.AttackListener;
 import top.oasismc.modules.combat.ShieldListener;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
 import top.oasismc.modules.customevent.trigger.CustomEventTrigger;
+import top.oasismc.modules.fish.FishListener;
 import top.oasismc.modules.recipes.CopperRecipes;
 import top.oasismc.modules.recipes.RecipeExpCheckListener;
 import top.oasismc.modules.utils.ignite.IgniteListener;
@@ -26,6 +27,7 @@ import top.oasismc.modules.utils.message.AutoBroadCastRunnable;
 import top.oasismc.modules.utils.message.DeathMsgListener;
 import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
+import top.oasismc.modules.utils.respawn.AutoRespawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,14 +120,20 @@ public final class OasisEss extends JavaPlugin {
         regAnvilListener(getConfig().getBoolean("modules.anvilColor.enable", true));
         regShutdownCmd();
         addRecipes();
+        regFish();
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
 
         Bukkit.getPluginManager().registerEvents(JoinQuitMsgListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(DeathMsgListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(AttackListener.getInstance(), this);
+        Bukkit.getPluginManager().registerEvents(AutoRespawn.getListener(), this);
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
         //Debug
         Bukkit.getPluginManager().registerEvents(ShieldListener.getInstance(), this);
+    }
+
+    private void regFish() {
+        Bukkit.getPluginManager().registerEvents(FishListener.getListener(), this);
     }
 
     private void regAnvilListener(boolean load) {

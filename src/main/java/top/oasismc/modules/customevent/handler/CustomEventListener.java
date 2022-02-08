@@ -126,7 +126,7 @@ public class CustomEventListener implements Listener {
         if (random.nextInt(0, 100) < 5) {
             event.getDrops().add(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1));
         }
-        for (String name : giantDropSkullMap.get(event.getEntity().getUniqueId())) {
+        for (String name : giantDropSkullMap.getOrDefault(event.getEntity().getUniqueId(), new HashSet<>())) {
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
             ItemMeta meta = skull.getItemMeta();
             if (meta == null)
@@ -172,7 +172,6 @@ public class CustomEventListener implements Listener {
                         bossBarMap.get(uuid).removeAll();
                         giant.getNearbyEntities(50, 50, 50).forEach(e -> {
                             if (e instanceof Player) {
-
                                 bossBarMap.get(uuid).addPlayer((Player) e);
                             }
                         });

@@ -5,7 +5,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -142,6 +141,17 @@ public class AttackListener implements Listener {
             event.setDamage(event.getDamage() / (Math.pow(1.35, attackRate) - 0.1));
             //计算公式:伤害 ÷ (1.35 ^ 耐久剩余百分比 - 0.1)
         }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void damage4FoolLevel(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player player))
+            return;
+        int foodLevel = player.getFoodLevel();
+        double scale = foodLevel / 20d;
+        double damage = event.getDamage();
+        damage *= (Math.pow(1.5, scale) - 0.5);
+        event.setDamage(damage);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
