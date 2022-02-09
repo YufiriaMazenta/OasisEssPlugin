@@ -1,5 +1,6 @@
 package top.oasismc.modules.combat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -49,9 +50,9 @@ public class AttackListener implements Listener {
     }
 
     //特殊武器：荣耀之刃的监听代码
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttack(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player))
+        if (!(event.getDamager() instanceof Player player))
             return;
         ItemStack item = ((Player) event.getDamager()).getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR)
@@ -64,20 +65,16 @@ public class AttackListener implements Listener {
             return;
         if (Math.random() < 1 - getPlugin().getConfig().getDouble("honorSword.probability", 0.1))
             return;
+        if (!(event.getEntity() instanceof LivingEntity))
+            return;
         if (playerAttackMap.getOrDefault(event.getDamager().getUniqueId(), 0) == 0) {
             playerAttackMap.put(event.getDamager().getUniqueId(), 1);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Entity entity = event.getEntity();
-                    ((Player) event.getDamager()).attack(entity);
-                    ((Player) event.getDamager()).swingMainHand();
-                    if (item.getItemMeta() instanceof Damageable) {
-                        Damageable meta = (Damageable) item.getItemMeta();
-                        meta.setDamage(meta.getDamage() - 1);
-                        item.setItemMeta((ItemMeta) meta);
-                        ((Player) event.getDamager()).getInventory().setItem(EquipmentSlot.HAND, item);
-                    }
+                    LivingEntity entity = (LivingEntity) event.getEntity();
+                    player.attack(entity);
+                    player.swingMainHand();
                     new BukkitRunnable() {
                         @Override
                         public void run() {

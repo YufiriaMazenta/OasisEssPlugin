@@ -1,6 +1,5 @@
 package top.oasismc.modules.utils.message;
 
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -11,7 +10,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import top.oasismc.OasisEss;
-import top.oasismc.api.message.BaseComponentGetter;
 
 import static top.oasismc.OasisEss.color;
 

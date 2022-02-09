@@ -45,6 +45,7 @@ recipes:
 event:
   dateStart: 'A new day begins!'
   spawnGiantEvent: '&cGiant Day Start!'
+  noBed: '&cCan not use bed!'
 commands:
   hat: '&Success'
   shutdown:

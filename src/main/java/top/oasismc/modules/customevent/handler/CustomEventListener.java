@@ -12,10 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import top.oasismc.api.nms.actionbar.ActionBarSender;
 import top.oasismc.modules.customevent.events.DateStartEvent;
 
 import java.util.*;
@@ -47,17 +49,29 @@ public class CustomEventListener implements Listener {
         bossBarMap = new HashMap<>();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onDateStart(DateStartEvent event) {
+    private void stopEvent() {
         eventSwitchMap.put(1, false);
-        if (giantBossBarThread != null) {
-            giantBossBarThread.cancel();
-            giantBossBarThread = null;
-        }
         eventSwitchMap.put(2, false);
         eventSwitchMap.put(3, false);
         eventSwitchMap.put(4, false);
         eventSwitchMap.put(5, false);
+        if (giantBossBarThread != null) {
+            giantBossBarThread.cancel();
+            giantBossBarThread = null;
+        }
+        giantDropSkullMap.clear();
+        bossBarMap.keySet().forEach(key-> {
+            Giant giant = (Giant) Bukkit.getEntity(key);
+            if (giant == null || giant.isDead()) {
+                bossBarMap.get(key).removeAll();
+            }
+        });
+        bossBarMap.clear();
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDateStart(DateStartEvent event) {
+        stopEvent();
         int eventId = random.nextInt(21);
         switch (eventId) {
             case 0 -> {
@@ -72,6 +86,15 @@ public class CustomEventListener implements Listener {
             case 20 -> event5();
         }
         bcByKey("event.dateStart");
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerEnterBed(PlayerBedEnterEvent event) {
+        if (eventSwitchMap.get(1)) {
+            event.setCancelled(true);
+            String msg = getTextConfig().getConfig().getString("event.noBed", "");
+            getActionBarSender().sendActionBar(event.getPlayer(), color(msg));
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -113,9 +136,6 @@ public class CustomEventListener implements Listener {
             }
         }
     }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onGiantCleared() {}
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onGiantDeath(EntityDeathEvent event) {
@@ -161,11 +181,12 @@ public class CustomEventListener implements Listener {
         giantBossBarThread = new BukkitRunnable() {
             @Override
             public void run() {
-                bossBarMap.keySet().forEach(uuid -> {
+                Set<UUID> delUuids = new HashSet<>();
+                for (UUID uuid : bossBarMap.keySet()) {
                     Giant giant = (Giant) Bukkit.getEntity(uuid);
                     if (giant == null || giant.isDead()) {
                         bossBarMap.get(uuid).removeAll();
-                        bossBarMap.remove(uuid);
+                        delUuids.add(uuid);
                     } else {
                         double process = giant.getHealth() / giant.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
                         bossBarMap.get(uuid).setProgress(process);
@@ -176,7 +197,8 @@ public class CustomEventListener implements Listener {
                             }
                         });
                     }
-                });
+                }
+                delUuids.forEach(bossBarMap::remove);
             }
         };
         giantBossBarThread.runTaskTimer(getPlugin(), 0, 1);
