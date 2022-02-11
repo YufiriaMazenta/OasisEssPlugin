@@ -35,6 +35,8 @@ modules:
     effectLevel: 2
   anvilColor:
     enable: true
+  eliteMob:
+    prop: 1.0
 
 honorSword:
   lore: '&8Honor Sword'

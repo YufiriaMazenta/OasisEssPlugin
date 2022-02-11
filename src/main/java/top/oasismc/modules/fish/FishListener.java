@@ -7,10 +7,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import top.oasismc.modules.customevent.handler.CustomEventListener;
 
 import java.util.*;
-
-import static top.oasismc.OasisEss.getPlugin;
 
 public class FishListener implements Listener {
 
@@ -33,7 +32,7 @@ public class FishListener implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             Entity caught = event.getCaught();
-            if (getPlugin().getConfig().getBoolean("modules.randomFish", true)) {
+            if (CustomEventListener.getListener().getEventSwitchMap().getOrDefault(2, false)) {
                 EntityType[] types = EntityType.values();
                 List<EntityType> typeList = new ArrayList<>(List.of(types));
                 typeList.remove(EntityType.PLAYER);

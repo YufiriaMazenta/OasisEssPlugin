@@ -1,6 +1,7 @@
 package top.oasismc;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.oasismc.api.config.ConfigFile;
@@ -18,6 +19,7 @@ import top.oasismc.modules.combat.ShieldListener;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
 import top.oasismc.modules.customevent.trigger.CustomEventTrigger;
 import top.oasismc.modules.fish.FishListener;
+import top.oasismc.modules.mob.MobSpawnListener;
 import top.oasismc.modules.recipes.CopperRecipes;
 import top.oasismc.modules.recipes.RecipeExpCheckListener;
 import top.oasismc.modules.utils.ignite.IgniteListener;
@@ -29,9 +31,11 @@ import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 import top.oasismc.modules.utils.respawn.AutoRespawn;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 import static org.bukkit.ChatColor.*;
 
@@ -42,6 +46,7 @@ public final class OasisEss extends JavaPlugin {
     private static ActionBarSender actionBarSender;
     private static List<ConfigFile> configs;
     private static AutoBroadCastRunnable broadCastRunnable;
+    private static Set<NamespacedKey> advancementSet;
 
     public OasisEss() {
         setPlugin(this);
@@ -60,6 +65,7 @@ public final class OasisEss extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("oasis")).setTabCompleter(reload);
 
         actionBarSender = new ActionBarSender();
+        advancementSet = new HashSet<>();
 
         regModules();
 
@@ -70,6 +76,9 @@ public final class OasisEss extends JavaPlugin {
     public void onDisable() {
         Bukkit.resetRecipes();
         Bukkit.getScheduler().cancelTasks(this);
+        for (NamespacedKey key : advancementSet) {
+            Bukkit.getUnsafe().removeAdvancement(key);
+        }
         info(RED + "Plugin Disabled");
     }
 
@@ -121,6 +130,7 @@ public final class OasisEss extends JavaPlugin {
         regShutdownCmd();
         addRecipes();
         regFish();
+        regAdvancements();
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
 
         Bukkit.getPluginManager().registerEvents(JoinQuitMsgListener.getListener(), this);
@@ -128,6 +138,7 @@ public final class OasisEss extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(AttackListener.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(AutoRespawn.getListener(), this);
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
+        Bukkit.getPluginManager().registerEvents(MobSpawnListener.getListener(), this);
         //Debug
         Bukkit.getPluginManager().registerEvents(ShieldListener.getInstance(), this);
     }
@@ -220,5 +231,40 @@ public final class OasisEss extends JavaPlugin {
         OasisEss.broadCastRunnable = broadCastRunnable;
     }
 
+    public void regAdvancements() {
+        regAdvancement("oasis.advancement.elite1", "advancement/KillEliteMob.json");
+    }
+
+    private void regAdvancement(String key, String filePath) {
+        File jsonFile = new File(getDataFolder(), filePath);
+        if (!jsonFile.exists())
+            saveResource(filePath, false);
+        String advancementJSON;
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(jsonFile));
+
+            String temp;
+            while ((temp = reader.readLine()) != null) {
+                builder.append(temp);
+            }
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        advancementJSON = builder.toString();
+        NamespacedKey namespacedKey = new NamespacedKey(this, key);
+        try {
+            Bukkit.getUnsafe().loadAdvancement(
+                    namespacedKey,
+                    advancementJSON
+            );
+            advancementSet.add(namespacedKey);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

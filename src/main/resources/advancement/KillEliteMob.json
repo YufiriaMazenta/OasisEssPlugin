@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:netherite_sword"
+    },
+    "title": {
+      "text": "精英猎人",
+      "color": "purple"
+    },
+    "description": "第一次击杀精英怪物",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png"
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

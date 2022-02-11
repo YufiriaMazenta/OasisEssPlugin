@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import top.oasismc.api.nms.actionbar.ActionBarSender;
 import top.oasismc.modules.customevent.events.DateStartEvent;
 
 import java.util.*;
@@ -80,7 +79,11 @@ public class CustomEventListener implements Listener {
                 startGiantBossBarThread();
                 return;
             }
-            case 5 -> event2();
+            case 5 -> {
+                bcByKey("event.fishEvent");
+                eventSwitchMap.put(2, true);
+                return;
+            }
             case 10 -> event3();
             case 15 -> event4();
             case 20 -> event5();
@@ -204,9 +207,6 @@ public class CustomEventListener implements Listener {
         giantBossBarThread.runTaskTimer(getPlugin(), 0, 1);
     }
 
-    private void event2() {
-        //TODO
-    }
     private void event3() {
         //TODO
     }
@@ -217,4 +217,7 @@ public class CustomEventListener implements Listener {
         //TODO
     }
 
+    public Map<Integer, Boolean> getEventSwitchMap() {
+        return eventSwitchMap;
+    }
 }
