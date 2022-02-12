@@ -1,18 +1,17 @@
 {
+  "parent": "oasisess:kill_100_player",
   "display": {
     "icon": {
-      "item": "minecraft:netherite_sword"
+      "item": "minecraft:diamond_sword"
     },
     "title": {
-      "text": "精英猎人",
-      "color": "purple"
+      "text": "&6&l千人斩"
     },
-    "description": "第一次击杀精英怪物",
+    "description": "&6击杀1000名玩家",
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": true,
-    "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png"
+    "hidden": false
   },
   "criteria": {
     "imp": {

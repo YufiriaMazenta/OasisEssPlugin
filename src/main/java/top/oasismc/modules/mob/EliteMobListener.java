@@ -3,8 +3,6 @@ package top.oasismc.modules.mob;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,16 +25,16 @@ import java.util.Random;
 
 import static top.oasismc.OasisEss.*;
 
-public class MobSpawnListener implements Listener {
+public class EliteMobListener implements Listener {
 
-    private final static MobSpawnListener listener;
+    private final static EliteMobListener listener;
     private Random random;
 
-    static {listener = new MobSpawnListener();}
+    static {listener = new EliteMobListener();}
 
-    private MobSpawnListener() { random = new Random(); }
+    private EliteMobListener() { random = new Random(); }
 
-    public static MobSpawnListener getListener() {
+    public static EliteMobListener getListener() {
         return listener;
     }
 
@@ -79,17 +77,17 @@ public class MobSpawnListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEliteMobDamageEntity(EntityDamageByEntityEvent event) {
-        Entity damager;
-        if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-            if (((Projectile) event.getDamager()).getShooter() instanceof Entity) {
-                damager = (Entity) ((Projectile) event.getDamager()).getShooter();
-            } else
-                return;
+        Entity damager = event.getDamager();
+        if (damager instanceof Projectile) {
+            ProjectileSource source = ((Projectile) event.getDamager()).getShooter();
+            if (source instanceof Entity entity) {
+                damager = entity;
+            }
         } else {
             damager = event.getDamager();
         }
         if (damager.getScoreboardTags().contains("elite")) {
-            event.setDamage(event.getDamage() * 2);
+            event.setDamage(event.getDamage() * 2.5);
         }
     }
 
@@ -115,11 +113,7 @@ public class MobSpawnListener implements Listener {
                 event.getDrops().add(luckPotion);
             }
             if (event.getEntity().getKiller() != null) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                        "advancement grant "
-                        + event.getEntity().getKiller().getName()
-                        + " only oasisess:oasis.advancement.elite1"
-                );
+                getPlugin().addAdvancement(event.getEntity().getKiller().getName(), "kill_elite_mob");
             }
         }
     }

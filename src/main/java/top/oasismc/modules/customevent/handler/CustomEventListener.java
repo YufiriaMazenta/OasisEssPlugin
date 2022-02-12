@@ -159,6 +159,10 @@ public class CustomEventListener implements Listener {
             event.getDrops().add(skull);
         }
         giantDropSkullMap.remove(event.getEntity().getUniqueId());
+        Player player = event.getEntity().getKiller();
+        if (player == null)
+            return;
+        getPlugin().addAdvancement(player.getName(), "kill_giant");
     }
 
     @EventHandler(priority = EventPriority.HIGH)

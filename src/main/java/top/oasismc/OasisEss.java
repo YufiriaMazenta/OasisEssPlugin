@@ -2,10 +2,17 @@ package top.oasismc;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.oasismc.api.config.ConfigFile;
 import top.oasismc.api.nms.actionbar.ActionBarSender;
+import top.oasismc.modules.AdvancementListener;
 import top.oasismc.modules.anvil.AnvilListener;
 import top.oasismc.modules.auth.VerifyCommand;
 import top.oasismc.modules.auth.LoginCommand;
@@ -19,7 +26,7 @@ import top.oasismc.modules.combat.ShieldListener;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
 import top.oasismc.modules.customevent.trigger.CustomEventTrigger;
 import top.oasismc.modules.fish.FishListener;
-import top.oasismc.modules.mob.MobSpawnListener;
+import top.oasismc.modules.mob.EliteMobListener;
 import top.oasismc.modules.recipes.CopperRecipes;
 import top.oasismc.modules.recipes.RecipeExpCheckListener;
 import top.oasismc.modules.utils.ignite.IgniteListener;
@@ -31,22 +38,20 @@ import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 import top.oasismc.modules.utils.respawn.AutoRespawn;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.bukkit.ChatColor.*;
 
-public final class OasisEss extends JavaPlugin {
+public final class OasisEss extends JavaPlugin implements Listener {
 
     private static OasisEss plugin;
     private static ConfigFile textConfig;
     private static ActionBarSender actionBarSender;
     private static List<ConfigFile> configs;
     private static AutoBroadCastRunnable broadCastRunnable;
-    private static Set<NamespacedKey> advancementSet;
+    private static Set<String> advancementSet;
 
     public OasisEss() {
         setPlugin(this);
@@ -76,8 +81,10 @@ public final class OasisEss extends JavaPlugin {
     public void onDisable() {
         Bukkit.resetRecipes();
         Bukkit.getScheduler().cancelTasks(this);
-        for (NamespacedKey key : advancementSet) {
-            Bukkit.getUnsafe().removeAdvancement(key);
+        for (String key : advancementSet) {
+            NamespacedKey namespacedKey = new NamespacedKey(this, key);
+            Bukkit.getUnsafe().removeAdvancement(namespacedKey);
+            info(color("&3Removed advancement " + key));
         }
         info(RED + "Plugin Disabled");
     }
@@ -138,7 +145,8 @@ public final class OasisEss extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(AttackListener.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(AutoRespawn.getListener(), this);
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
-        Bukkit.getPluginManager().registerEvents(MobSpawnListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(EliteMobListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(AdvancementListener.getListener(), this);
         //Debug
         Bukkit.getPluginManager().registerEvents(ShieldListener.getInstance(), this);
     }
@@ -232,17 +240,30 @@ public final class OasisEss extends JavaPlugin {
     }
 
     public void regAdvancements() {
-        regAdvancement("oasis.advancement.elite1", "advancement/KillEliteMob.json");
+        regAdvancement("join_oasis");
+        regAdvancement("kill_elite_mob");
+        regAdvancement("kill_100_player");
+        regAdvancement("kill_1000_player");
+        regAdvancement("kill_giant");
+        regAdvancement("spyglass_at_giant");
+        regAdvancement("find_mansion");
+        regAdvancement("use_totem_5");
+        regAdvancement("use_totem_10");
     }
 
-    private void regAdvancement(String key, String filePath) {
+    private void regAdvancement(String key) {
+        String filePath = "advancement/" + key + ".json";
         File jsonFile = new File(getDataFolder(), filePath);
         if (!jsonFile.exists())
             saveResource(filePath, false);
         String advancementJSON;
         StringBuilder builder = new StringBuilder();
+        advancementSet.add(key);
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(jsonFile));
+            FileInputStream inputStream = new FileInputStream(jsonFile);
+            InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+
+            BufferedReader reader = new BufferedReader(streamReader);
 
             String temp;
             while ((temp = reader.readLine()) != null) {
@@ -254,17 +275,34 @@ public final class OasisEss extends JavaPlugin {
             e.printStackTrace();
         }
 
-        advancementJSON = builder.toString();
+        advancementJSON = color(builder.toString());
         NamespacedKey namespacedKey = new NamespacedKey(this, key);
         try {
             Bukkit.getUnsafe().loadAdvancement(
                     namespacedKey,
                     advancementJSON
             );
-            advancementSet.add(namespacedKey);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addAdvancement(String playerName, String key) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player == null)
+            return;
+        Advancement advancement = Bukkit.getAdvancement(new NamespacedKey(this, key));
+        if (advancement == null)
+            return;
+        AdvancementProgress progress = player.getAdvancementProgress(advancement);
+        if (progress.isDone())
+            return;
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                "advancement grant "
+                        + playerName
+                        + " only oasisess:"
+                        + key
+        );
     }
 
 }

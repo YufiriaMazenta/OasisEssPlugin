@@ -1,0 +1,31 @@
+{
+  "parent": "oasisess:join_oasis",
+  "display": {
+    "icon": {
+      "item": "minecraft:dark_oak_sapling"
+    },
+    "title": {
+      "text": "&5八云邸"
+    },
+    "description": "&7到达林地府邸",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "feature": "mansion"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}
