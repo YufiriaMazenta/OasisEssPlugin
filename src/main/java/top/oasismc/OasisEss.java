@@ -81,10 +81,12 @@ public final class OasisEss extends JavaPlugin implements Listener {
     public void onDisable() {
         Bukkit.resetRecipes();
         Bukkit.getScheduler().cancelTasks(this);
-        for (String key : advancementSet) {
-            NamespacedKey namespacedKey = new NamespacedKey(this, key);
-            Bukkit.getUnsafe().removeAdvancement(namespacedKey);
-            info(color("&3Removed advancement " + key));
+        if (getConfig().getBoolean("unregister_advancement", false)) {
+            for (String key : advancementSet) {
+                NamespacedKey namespacedKey = new NamespacedKey(this, key);
+                Bukkit.getUnsafe().removeAdvancement(namespacedKey);
+                info(color("&3Removed advancement " + key));
+            }
         }
         info(RED + "Plugin Disabled");
     }
@@ -249,9 +251,13 @@ public final class OasisEss extends JavaPlugin implements Listener {
         regAdvancement("find_mansion");
         regAdvancement("use_totem_5");
         regAdvancement("use_totem_10");
+        regAdvancement("kill_op");
     }
 
     private void regAdvancement(String key) {
+        NamespacedKey namespacedKey = new NamespacedKey(this, key);
+        if (Bukkit.getAdvancement(namespacedKey) != null)
+            return;
         String filePath = "advancement/" + key + ".json";
         File jsonFile = new File(getDataFolder(), filePath);
         if (!jsonFile.exists())
@@ -276,7 +282,6 @@ public final class OasisEss extends JavaPlugin implements Listener {
         }
 
         advancementJSON = color(builder.toString());
-        NamespacedKey namespacedKey = new NamespacedKey(this, key);
         try {
             Bukkit.getUnsafe().loadAdvancement(
                     namespacedKey,

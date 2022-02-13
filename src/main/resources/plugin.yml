@@ -2,7 +2,7 @@ name: OasisEss
 version: ${project.version}
 main: top.oasismc.OasisEss
 api-version: 1.18
-load: STARTUP
+load: POSTWORLD
 softdepend: [ PlaceholderAPI, Vault, LuckPerms ]
 authors: [ ChiyodaXiaoYi, StringStream_ ]
 description: A essential Minecraft-Server Plugin developed by OasisGroup

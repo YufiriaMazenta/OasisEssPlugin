@@ -51,3 +51,5 @@ sounds:
   drawSword: 'entity.drowned.shoot'
   ignite_campfire: 'entity.generic.burn'
   shield_block: 'item.trident.hit_ground'
+
+unregister_advancement: false
