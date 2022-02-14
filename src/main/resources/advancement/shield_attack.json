@@ -1,0 +1,26 @@
+{
+  "parent": "oasisess:join_oasis",
+  "display": {
+    "icon": {
+      "item": "minecraft:shield"
+    },
+    "title": {
+      "text": "&c不要靠近我！恶魔！！！"
+    },
+    "description": "&7使用盾牌让对手获得虚弱效果",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

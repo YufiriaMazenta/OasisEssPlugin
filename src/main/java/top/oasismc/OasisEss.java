@@ -252,9 +252,16 @@ public final class OasisEss extends JavaPlugin implements Listener {
         regAdvancement("use_totem_5");
         regAdvancement("use_totem_10");
         regAdvancement("kill_op");
+        regAdvancement("eat_rotten_flesh");
+        regAdvancement("drink_crude_potion");
+        regAdvancement("fishing_lighting_1");
+        regAdvancement("fishing_lighting_2");
+        regAdvancement("shield_attack");
+        regAdvancement("craft_sculk_sensor");
     }
 
     private void regAdvancement(String key) {
+        advancementSet.add(key);
         NamespacedKey namespacedKey = new NamespacedKey(this, key);
         if (Bukkit.getAdvancement(namespacedKey) != null)
             return;
@@ -264,7 +271,6 @@ public final class OasisEss extends JavaPlugin implements Listener {
             saveResource(filePath, false);
         String advancementJSON;
         StringBuilder builder = new StringBuilder();
-        advancementSet.add(key);
         try {
             FileInputStream inputStream = new FileInputStream(jsonFile);
             InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);

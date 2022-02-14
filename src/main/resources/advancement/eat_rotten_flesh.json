@@ -1,0 +1,26 @@
+{
+  "parent": "oasisess:join_oasis",
+  "display": {
+    "icon": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "title": {
+      "text": "&a多少带点臭"
+    },
+    "description": "&7食用腐肉",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

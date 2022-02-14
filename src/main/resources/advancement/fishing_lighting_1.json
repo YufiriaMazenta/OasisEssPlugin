@@ -1,0 +1,26 @@
+{
+  "parent": "oasisess:join_oasis",
+  "display": {
+    "icon": {
+      "item": "minecraft:fishing_rod"
+    },
+    "title": {
+      "text": "&b奇怪的电流"
+    },
+    "description": "&7钓鱼钓出闪电",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

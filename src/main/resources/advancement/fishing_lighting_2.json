@@ -1,0 +1,26 @@
+{
+  "parent": "oasisess:fishing_lighting_1",
+  "display": {
+    "icon": {
+      "item": "minecraft:fishing_rod"
+    },
+    "title": {
+      "text": "&6&l震慑的威光"
+    },
+    "description": "&6第二次钓鱼钓出闪电",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

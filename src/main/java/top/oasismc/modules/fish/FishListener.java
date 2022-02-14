@@ -4,12 +4,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import top.oasismc.api.config.ConfigFile;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
 
 import java.util.*;
+
+import static top.oasismc.OasisEss.getPlugin;
 
 public class FishListener implements Listener {
 
@@ -44,6 +48,15 @@ public class FishListener implements Listener {
                     return;
                 event.getCaught().remove();
                 Entity entity = event.getPlayer().getWorld().spawnEntity(event.getHook().getLocation(), typeList.get(random.nextInt(typeList.size())));
+                if (entity.getType().equals(EntityType.LIGHTNING)) {
+                    Player player = event.getPlayer();
+                    if (!player.getScoreboardTags().contains("fish_light")) {
+                        getPlugin().addAdvancement(player.getName(), "fishing_lighting_2");
+                    } else {
+                        getPlugin().addAdvancement(player.getName(), "fishing_lighting_1");
+                        player.addScoreboardTag("fish_light");
+                    }
+                }
                 event.getHook().setHookedEntity(entity);
                 event.getHook().pullHookedEntity();
             } else {

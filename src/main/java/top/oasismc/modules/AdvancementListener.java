@@ -4,8 +4,14 @@ import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionType;
 
 import static top.oasismc.OasisEss.getPlugin;
 
@@ -51,6 +57,36 @@ public class AdvancementListener implements Listener {
             getPlugin().addAdvancement(event.getPlayer().getName(), "use_totem_5");
             if (newValue >= 10) {
                 getPlugin().addAdvancement(event.getPlayer().getName(), "use_totem_10");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onKillOp(PlayerDeathEvent event) {
+        if (event.getEntity().isOp()) {
+            if (event.getEntity().getKiller() == null)
+                return;
+            getPlugin().addAdvancement(event.getEntity().getKiller().getName(), "kill_op");
+        }
+    }
+
+    @EventHandler
+    public void onDrinkCrudePotion(PlayerItemConsumeEvent event) {
+        ItemStack item = event.getItem();
+        switch (item.getType()) {
+            case POTION -> {
+                if (!item.hasItemMeta())
+                    return;
+                ItemMeta meta = item.getItemMeta();
+                PotionMeta potionMeta = (PotionMeta) meta;
+                if (potionMeta == null)
+                    return;
+                if (potionMeta.getBasePotionData().getType().equals(PotionType.AWKWARD)) {
+                    getPlugin().addAdvancement(event.getPlayer().getName(), "drink_crude_potion");
+                }
+            }
+            case ROTTEN_FLESH -> {
+                getPlugin().addAdvancement(event.getPlayer().getName(), "eat_rotten_flesh");
             }
         }
     }

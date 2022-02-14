@@ -1,0 +1,35 @@
+{
+  "parent": "oasisess:join_oasis",
+  "display": {
+    "icon": {
+      "item": "minecraft:sculk_sensor"
+    },
+    "title": {
+      "text": "&3一次偶然的尝试"
+    },
+    "description": "&7制作潜声传感器",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:sculk_sensor"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

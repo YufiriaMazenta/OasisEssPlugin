@@ -69,23 +69,10 @@ public class ShieldListener implements Listener {
                 int effectTime = getPlugin().getConfig().getInt("modules.shield.effectTime", 2) * 20;
                 int effectLevel = getPlugin().getConfig().getInt("modules.shield.effectLevel", 2) - 1;
                 ((LivingEntity) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), effectTime, effectLevel, false));
+                getPlugin().addAdvancement(entity.getName(), "shield_attack");
             }
         }
     }
-
-//    @EventHandler(priority = EventPriority.HIGHEST)
-//    public void test(EntityDamageByEntityEvent event) {
-//        if (event.getEntity() instanceof Player player) {
-//            sendMessage(player, "------------------");
-//            sendMessage(player, "基础伤害:" + event.getDamage(EntityDamageEvent.DamageModifier.BASE));
-//            sendMessage(player, "盾牌减免:" + event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING));
-//            sendMessage(player, "护甲减免:" + event.getDamage(EntityDamageEvent.DamageModifier.ARMOR));
-//            sendMessage(player, "附魔减免:" + event.getDamage(EntityDamageEvent.DamageModifier.MAGIC));
-//            sendMessage(player, "抗性减免:" + event.getDamage(EntityDamageEvent.DamageModifier.RESISTANCE));
-//            sendMessage(player, "伤害吸收:" + event.getDamage(EntityDamageEvent.DamageModifier.ABSORPTION));
-//            sendMessage(player, "最终伤害:" + event.getFinalDamage());
-//        }
-//    }
 
     private double getArmorDamage(double originalDamage, Player player) {
         double armor = Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_ARMOR)).getValue();
