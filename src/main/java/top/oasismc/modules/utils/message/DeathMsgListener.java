@@ -47,7 +47,7 @@ public class DeathMsgListener implements Listener {
                 case DRAGON_BREATH -> killer = OasisEss.getTextConfig().getConfig().getString("killer.dragon_breath", "Dragon Breath");
                 case DROWNING -> killer = OasisEss.getTextConfig().getConfig().getString("killer.drowning", "Water Drowning");
                 case DRYOUT -> killer = OasisEss.getTextConfig().getConfig().getString("killer.dryout", "Lack of Water");
-                case ENTITY_ATTACK, THORNS -> {
+                case ENTITY_ATTACK, THORNS, ENTITY_SWEEP_ATTACK -> {
                     String entity = ((EntityDamageByEntityEvent) event).getDamager().getName();
                     killer = OasisEss.getTextConfig().getConfig().getString("killer.entity_attack." + entity, entity);
                 }

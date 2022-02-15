@@ -1,7 +1,9 @@
 package top.oasismc;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.CommandSender;
@@ -9,7 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.CachedServerIcon;
 import top.oasismc.api.config.ConfigFile;
 import top.oasismc.api.nms.actionbar.ActionBarSender;
 import top.oasismc.modules.AdvancementListener;
@@ -38,6 +42,8 @@ import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 import top.oasismc.modules.utils.respawn.AutoRespawn;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -52,8 +58,11 @@ public final class OasisEss extends JavaPlugin implements Listener {
     private static List<ConfigFile> configs;
     private static AutoBroadCastRunnable broadCastRunnable;
     private static Set<String> advancementSet;
+    private CachedServerIcon icon;
 
     public OasisEss() {
+        icon = null;
+        initServerIcon();
         setPlugin(this);
     }
 
@@ -143,6 +152,7 @@ public final class OasisEss extends JavaPlugin implements Listener {
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
 
         Bukkit.getPluginManager().registerEvents(JoinQuitMsgListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(DeathMsgListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(AttackListener.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(AutoRespawn.getListener(), this);
@@ -298,6 +308,14 @@ public final class OasisEss extends JavaPlugin implements Listener {
         }
     }
 
+    private void initServerIcon() {
+        try {
+            icon = Bukkit.loadServerIcon(ImageIO.read(new File(getDataFolder(), "icon.jpg")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addAdvancement(String playerName, String key) {
         Player player = Bukkit.getPlayer(playerName);
         if (player == null)
@@ -314,6 +332,16 @@ public final class OasisEss extends JavaPlugin implements Listener {
                         + " only oasisess:"
                         + key
         );
+    }
+
+    @EventHandler
+    public void onPing(ServerListPingEvent event) {
+        if (icon != null) {
+            event.setServerIcon(icon);
+        }
+        String motd1 = getTextConfig().getConfig().getString("motd_1", "");
+        String motd2 = getTextConfig().getConfig().getString("motd_2", "");
+        event.setMotd(color(motd1) + "\n" + color(motd2));
     }
 
 }

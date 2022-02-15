@@ -1,5 +1,7 @@
 reload: '&aPlugin reloaded'
 notPlayer: '&cThe Command must be a player to use'
+motd_1: '&b&lOasis &3&lSurvival Server &a&l[1.18.1]'
+motd_2: '&9&lQQ群: 706677932 &8&l| &7游玩服务器请先加入QQ群'
 keepInventory:
   open:
     self: '&a&lKeepInventory On'
@@ -153,3 +155,5 @@ entity_name:
   Zoglin: '僵尸疣猪兽'
   Zombie: '僵尸'
   Zombie Villager: '僵尸村民'
+advancements:
+  kill_1000_player: '&6你已成功达成千人斩！你的空手伤害将永久提升一点'

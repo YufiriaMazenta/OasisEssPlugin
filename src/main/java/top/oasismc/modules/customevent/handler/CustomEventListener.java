@@ -93,7 +93,7 @@ public class CustomEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerEnterBed(PlayerBedEnterEvent event) {
-        if (eventSwitchMap.get(1)) {
+        if (eventSwitchMap.getOrDefault(1, false)) {
             event.setCancelled(true);
             String msg = getTextConfig().getConfig().getString("event.noBed", "");
             getActionBarSender().sendActionBar(event.getPlayer(), color(msg));

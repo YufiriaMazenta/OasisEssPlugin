@@ -1,19 +1,22 @@
 package top.oasismc.modules;
 
-import org.bukkit.Material;
-import org.bukkit.Statistic;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import static top.oasismc.OasisEss.getPlugin;
+import static top.oasismc.OasisEss.*;
 
 public class AdvancementListener implements Listener {
 
@@ -42,6 +45,9 @@ public class AdvancementListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         getPlugin().addAdvancement(event.getPlayer().getName(), "join_oasis");
+        Player player = event.getPlayer();
+        World world = player.getWorld();
+        player.teleport(new Location(world, 100, 100, 100));
     }
 
     @EventHandler
@@ -87,6 +93,25 @@ public class AdvancementListener implements Listener {
             }
             case ROTTEN_FLESH -> {
                 getPlugin().addAdvancement(event.getPlayer().getName(), "eat_rotten_flesh");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onGetAdvancement(PlayerAdvancementDoneEvent event) {
+        Player player = event.getPlayer();
+        switch (event.getAdvancement().getKey().getKey()) {
+            case "kill_1000_player" -> {
+                ItemStack resistancePotion = new ItemStack(Material.POTION);
+                PotionMeta resistanceMeta = (PotionMeta) Bukkit.getItemFactory().getItemMeta(Material.POTION);
+                resistanceMeta.setDisplayName(color("&3&l不死药"));
+                resistanceMeta.addCustomEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 600 * 20, 4), true);
+                resistanceMeta.setColor(Color.fromRGB(175, 238, 238));
+                resistancePotion.setItemMeta(resistanceMeta);
+                player.getInventory().addItem(resistancePotion);
+                sendMsg(player, "advancements.kill_1000_player");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute " + player.getName() + " minecraft:generic.attack_damage base set 2");
+                player.giveExp(32767);
             }
         }
     }
