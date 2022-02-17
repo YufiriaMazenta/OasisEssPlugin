@@ -1,0 +1,26 @@
+{
+  "parent": "oasisess:join_oasis",
+  "display": {
+    "icon": {
+      "item": "minecraft:golden_sword"
+    },
+    "title": {
+      "text": "&6&l一击毙命"
+    },
+    "description": "&6近战对玩家一击造成32点以上伤害",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

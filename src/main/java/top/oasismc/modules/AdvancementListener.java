@@ -3,7 +3,9 @@ package top.oasismc.modules;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -45,9 +47,6 @@ public class AdvancementListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         getPlugin().addAdvancement(event.getPlayer().getName(), "join_oasis");
-        Player player = event.getPlayer();
-        World world = player.getWorld();
-        player.teleport(new Location(world, 100, 100, 100));
     }
 
     @EventHandler
@@ -113,6 +112,17 @@ public class AdvancementListener implements Listener {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute " + player.getName() + " minecraft:generic.attack_damage base set 2");
                 player.giveExp(32767);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void damageAdvancementListener(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player player))
+            return;
+        if (!(event.getEntity() instanceof Player))
+            return;
+        if (event.getFinalDamage() >= 32) {
+            getPlugin().addAdvancement(player.getName(), "max_damage");
         }
     }
 

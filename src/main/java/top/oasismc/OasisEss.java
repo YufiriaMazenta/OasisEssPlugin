@@ -268,6 +268,7 @@ public final class OasisEss extends JavaPlugin implements Listener {
         regAdvancement("fishing_lighting_2");
         regAdvancement("shield_attack");
         regAdvancement("craft_sculk_sensor");
+        regAdvancement("max_damage");
     }
 
     private void regAdvancement(String key) {

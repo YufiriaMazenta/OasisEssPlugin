@@ -50,7 +50,7 @@ public class FishListener implements Listener {
                 Entity entity = event.getPlayer().getWorld().spawnEntity(event.getHook().getLocation(), typeList.get(random.nextInt(typeList.size())));
                 if (entity.getType().equals(EntityType.LIGHTNING)) {
                     Player player = event.getPlayer();
-                    if (!player.getScoreboardTags().contains("fish_light")) {
+                    if (player.getScoreboardTags().contains("fish_light")) {
                         getPlugin().addAdvancement(player.getName(), "fishing_lighting_2");
                     } else {
                         getPlugin().addAdvancement(player.getName(), "fishing_lighting_1");
