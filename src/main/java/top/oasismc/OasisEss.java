@@ -1,16 +1,13 @@
 package top.oasismc;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.CachedServerIcon;
@@ -18,10 +15,10 @@ import top.oasismc.api.config.ConfigFile;
 import top.oasismc.api.nms.actionbar.ActionBarSender;
 import top.oasismc.modules.AdvancementListener;
 import top.oasismc.modules.anvil.AnvilListener;
-import top.oasismc.modules.auth.VerifyCommand;
 import top.oasismc.modules.auth.LoginCommand;
 import top.oasismc.modules.auth.LoginListener;
 import top.oasismc.modules.auth.RegCommand;
+import top.oasismc.modules.auth.VerifyCommand;
 import top.oasismc.modules.cmds.HatCommand;
 import top.oasismc.modules.cmds.ReloadCommand;
 import top.oasismc.modules.cmds.ShutdownCommand;
@@ -42,8 +39,9 @@ import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 import top.oasismc.modules.utils.respawn.AutoRespawn;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -342,6 +340,8 @@ public final class OasisEss extends JavaPlugin implements Listener {
         }
         String motd1 = getTextConfig().getConfig().getString("motd_1", "");
         String motd2 = getTextConfig().getConfig().getString("motd_2", "");
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        }
         event.setMotd(color(motd1) + "\n" + color(motd2));
     }
 
