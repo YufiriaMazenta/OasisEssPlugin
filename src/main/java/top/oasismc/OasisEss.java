@@ -116,6 +116,9 @@ public final class OasisEss extends JavaPlugin implements Listener {
         }
         String message = textConfig.getConfig().getString(key, key);
         message = message.replace("%player%", sender.getName());
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            message = PlaceholderAPI.setPlaceholders((Player) sender, message);
+        }
         sender.sendMessage(color(message));
     }
 
@@ -341,6 +344,8 @@ public final class OasisEss extends JavaPlugin implements Listener {
         String motd1 = getTextConfig().getConfig().getString("motd_1", "");
         String motd2 = getTextConfig().getConfig().getString("motd_2", "");
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            motd1 = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayers()[0], motd1);
+            motd2 = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayers()[0], motd2);
         }
         event.setMotd(color(motd1) + "\n" + color(motd2));
     }
