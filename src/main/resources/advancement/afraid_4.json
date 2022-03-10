@@ -1,0 +1,26 @@
+{
+  "parent": "oasisess:afraid_1",
+  "display": {
+    "icon": {
+      "item": "minecraft:coal_block"
+    },
+    "title": {
+      "text": "&8假如给我三天光明"
+    },
+    "description": "&7触发恐惧最高阶段",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

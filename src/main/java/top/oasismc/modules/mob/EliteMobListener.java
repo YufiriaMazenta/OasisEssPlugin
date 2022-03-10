@@ -42,8 +42,6 @@ public class EliteMobListener implements Listener {
     public void spawnEliteMob(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof Monster monster))
             return;
-        if (event.getLocation().getBlock().getLightFromSky() < 10)
-            return;
         if (Math.random() < getPlugin().getConfig().getDouble("modules.eliteMob.prop", 0.05)) {
             if (monster.getType() != EntityType.CREEPER) {
                 monster.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999999, 3));
@@ -70,6 +68,10 @@ public class EliteMobListener implements Listener {
                     Projectile skull = ((ProjectileSource) event.getEntity()).launchProjectile(WitherSkull.class);
                     Vector vector = skull.getVelocity();
                     vector.multiply(5);
+                }
+            } case SKELETON -> {
+                if (Math.random() < 0.25) {
+
                 }
             }
         }

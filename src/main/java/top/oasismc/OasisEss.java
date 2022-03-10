@@ -1,5 +1,6 @@
 package top.oasismc;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -28,8 +29,7 @@ import top.oasismc.modules.customevent.handler.CustomEventListener;
 import top.oasismc.modules.customevent.trigger.CustomEventTrigger;
 import top.oasismc.modules.fish.FishListener;
 import top.oasismc.modules.mob.EliteMobListener;
-import top.oasismc.modules.recipes.CopperRecipes;
-import top.oasismc.modules.recipes.RecipeExpCheckListener;
+import top.oasismc.modules.mob.ExplodeListener;
 import top.oasismc.modules.utils.ignite.IgniteListener;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryCommand;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryListener;
@@ -38,8 +38,6 @@ import top.oasismc.modules.utils.message.DeathMsgListener;
 import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 import top.oasismc.modules.utils.respawn.AutoRespawn;
-
-import me.clip.placeholderapi.PlaceholderAPI;
 
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -147,7 +145,6 @@ public final class OasisEss extends JavaPlugin implements Listener {
         regHatCmd(getConfig().getBoolean("modules.hat.enable", true));
         regAnvilListener(getConfig().getBoolean("modules.anvilColor.enable", true));
         regShutdownCmd();
-        addRecipes();
         regFish();
         regAdvancements();
         broadCastRunnable = new AutoBroadCastRunnable(getConfig().getInt("modules.broadcast.interval", 300));
@@ -160,6 +157,7 @@ public final class OasisEss extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(EliteMobListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(AdvancementListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ExplodeListener(), this);
         //Debug
         Bukkit.getPluginManager().registerEvents(ShieldListener.getInstance(), this);
     }
@@ -232,16 +230,6 @@ public final class OasisEss extends JavaPlugin implements Listener {
         OasisEss.plugin = plugin;
     }
 
-    public void addRecipes() {
-        new CopperRecipes();
-        try {
-            Class.forName("top.oasismc.api.customrecipe.RecipeManager");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Bukkit.getPluginManager().registerEvents(RecipeExpCheckListener.getInstance(), this);
-        info("Module CustomRecipes Loaded");
-    }
 
     public static AutoBroadCastRunnable getBroadCastRunnable() {
         return broadCastRunnable;
@@ -270,6 +258,8 @@ public final class OasisEss extends JavaPlugin implements Listener {
         regAdvancement("shield_attack");
         regAdvancement("craft_sculk_sensor");
         regAdvancement("max_damage");
+        regAdvancement("afraid_1");
+        regAdvancement("afraid_4");
     }
 
     private void regAdvancement(String key) {

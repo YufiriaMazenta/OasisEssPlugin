@@ -49,44 +49,6 @@ public class AttackListener implements Listener {
         return itemDurabilityMap;
     }
 
-    //特殊武器：荣耀之刃的监听代码
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerAttack(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player player))
-            return;
-        ItemStack item = ((Player) event.getDamager()).getInventory().getItemInMainHand();
-        if (item.getType() == Material.AIR)
-            return;
-        if (item.getItemMeta() == null)
-            return;
-        if (item.getItemMeta().getLore() == null)
-            return;
-        if (!item.getItemMeta().getLore().contains(color(getPlugin().getConfig().getString("honorSword.lore", "&8Honor Sword"))))
-            return;
-        if (Math.random() < 1 - getPlugin().getConfig().getDouble("honorSword.probability", 0.1))
-            return;
-        if (!(event.getEntity() instanceof LivingEntity))
-            return;
-        if (playerAttackMap.getOrDefault(event.getDamager().getUniqueId(), 0) == 0) {
-            playerAttackMap.put(event.getDamager().getUniqueId(), 1);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    LivingEntity entity = (LivingEntity) event.getEntity();
-                    player.attack(entity);
-                    player.swingMainHand();
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            playerAttackMap.put(event.getDamager().getUniqueId(), 0);
-                        }
-                    }.runTaskLater(getPlugin(), getPlugin().getConfig().getInt("honorSword.cooling", 2) * 20L);
-                }
-            }.runTaskLater(getPlugin(), getPlugin().getConfig().getInt("honorSword.intervalTick", 11));
-        }
-
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void arms(EntityDamageByEntityEvent event) {
         double attackRate = 1.0;
@@ -138,17 +100,6 @@ public class AttackListener implements Listener {
             event.setDamage(event.getDamage() / (Math.pow(1.35, attackRate) - 0.1));
             //计算公式:伤害 ÷ (1.35 ^ 耐久剩余百分比 - 0.1)
         }
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void damage4FoolLevel(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player player))
-            return;
-        int foodLevel = player.getFoodLevel();
-        double scale = foodLevel / 20d;
-        double damage = event.getDamage();
-        damage *= (Math.pow(1.5, scale) - 0.5);
-        event.setDamage(damage);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
