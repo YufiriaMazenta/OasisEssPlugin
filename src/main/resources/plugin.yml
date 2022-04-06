@@ -33,3 +33,8 @@ commands:
     description: /hat
   shutdown:
     permission: oasis.admin
+  autorespawn:
+    aliases:
+      - ar
+  camera:
+    permission: oasis.camera

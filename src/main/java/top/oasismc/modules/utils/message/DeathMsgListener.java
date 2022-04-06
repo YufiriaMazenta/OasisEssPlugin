@@ -30,7 +30,5 @@ public class DeathMsgListener implements Listener {
     @EventHandler
     public void playerDeath(PlayerDeathEvent p) {
         String deathMsg = p.getDeathMessage();
-        deathMsg = "&7" + deathMsg;
-        p.setDeathMessage(color(deathMsg));
     }
 }

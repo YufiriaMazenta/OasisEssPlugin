@@ -1,13 +1,13 @@
 {
-  "parent": "oasisess:kill_op",
+  "parent": "oasisess:drink_crude_potion",
   "display": {
     "icon": {
-      "item": "minecraft:golden_sword"
+      "item": "minecraft:potion"
     },
     "title": {
-      "text": "&6&l一击毙命"
+      "text": "&6错差时光"
     },
-    "description": "&6近战对玩家一击造成32点以上伤害",
+    "description": "&7使用建筑药水(飞行药水)",
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,

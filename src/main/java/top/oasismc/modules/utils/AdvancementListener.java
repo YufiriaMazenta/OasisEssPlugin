@@ -1,4 +1,4 @@
-package top.oasismc.modules;
+package top.oasismc.modules.utils;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -31,6 +31,13 @@ public class AdvancementListener implements Listener {
     private AdvancementListener() {}
 
     public static AdvancementListener getListener() {return listener;}
+
+    @EventHandler
+    public void onAdvancementGranted(PlayerAdvancementDoneEvent event) {
+        if (event.getAdvancement().getKey().getKey().equals("kill_100_player")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + event.getPlayer().getName() + " permission set oasis.skins.hefushaonv");
+        }
+    }
 
     @EventHandler
     public void onKillPlayer(PlayerStatisticIncrementEvent event) {

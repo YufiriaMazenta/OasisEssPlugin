@@ -7,10 +7,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -42,10 +39,17 @@ public class EliteMobListener implements Listener {
     public void spawnEliteMob(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof Monster monster))
             return;
+        if (event.getLocation().getBlock().getLightFromSky() < 10)
+            return;
         if (Math.random() < getPlugin().getConfig().getDouble("modules.eliteMob.prop", 0.05)) {
             if (monster.getType() != EntityType.CREEPER) {
-                monster.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999999, 3));
-                monster.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 9999999, 0));
+                if (monster instanceof Slime) {
+                    ((Slime) monster).setSize(25);
+                    monster.setHealth(monster.getMaxHealth());
+                } else {
+                    monster.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999999, 3));
+                    monster.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 9999999, 0));
+                }
             }
             monster.addScoreboardTag("elite");
             monster.setGlowing(true);
@@ -118,6 +122,16 @@ public class EliteMobListener implements Listener {
                 getPlugin().addAdvancement(event.getEntity().getKiller().getName(), "kill_elite_mob");
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onZombieTransformVillager(EntityTransformEvent event) {
+        if (!event.getTransformReason().equals(EntityTransformEvent.TransformReason.CURED))
+            return;
+        if (Math.random() < 0.25)
+            return;
+        if (event.getEntity().getScoreboardTags().contains("elite"))
+            event.getTransformedEntity().addScoreboardTag("elite");
     }
 
 }

@@ -1,5 +1,5 @@
 {
-  "parent": "oasisess:join_oasis",
+  "parent": "oasisess:shield_attack",
   "display": {
     "icon": {
       "item": "minecraft:totem_of_undying"

@@ -1,0 +1,35 @@
+{
+  "parent": "oasisess:craft_bundle",
+  "display": {
+    "icon": {
+      "item": "minecraft:amethyst_cluster"
+    },
+    "title": {
+      "text": "&d透明而闪亮的晶体"
+    },
+    "description": "&7获得紫水晶簇",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:amethyst_cluster"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

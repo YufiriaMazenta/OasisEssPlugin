@@ -90,7 +90,7 @@ public class LoginListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void noLoginChat(AsyncPlayerChatEvent event) {
         if (!playerIsLoginMap.getOrDefault(event.getPlayer().getName(), false)) {
             event.setCancelled(true);

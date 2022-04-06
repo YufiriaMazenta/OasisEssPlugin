@@ -6,7 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -14,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.CachedServerIcon;
 import top.oasismc.api.config.ConfigFile;
 import top.oasismc.api.nms.actionbar.ActionBarSender;
-import top.oasismc.modules.AdvancementListener;
+import top.oasismc.modules.utils.*;
 import top.oasismc.modules.anvil.AnvilListener;
 import top.oasismc.modules.auth.LoginCommand;
 import top.oasismc.modules.auth.LoginListener;
@@ -28,8 +28,11 @@ import top.oasismc.modules.combat.ShieldListener;
 import top.oasismc.modules.customevent.handler.CustomEventListener;
 import top.oasismc.modules.customevent.trigger.CustomEventTrigger;
 import top.oasismc.modules.fish.FishListener;
+import top.oasismc.modules.lvl.ExpChangeListener;
+import top.oasismc.modules.mob.DragonDeadListener;
 import top.oasismc.modules.mob.EliteMobListener;
 import top.oasismc.modules.mob.ExplodeListener;
+import top.oasismc.modules.utils.drop.IronGolemDeathListener;
 import top.oasismc.modules.utils.ignite.IgniteListener;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryCommand;
 import top.oasismc.modules.utils.keepinventory.KeepInventoryListener;
@@ -38,6 +41,7 @@ import top.oasismc.modules.utils.message.DeathMsgListener;
 import top.oasismc.modules.utils.message.JoinQuitMsgListener;
 import top.oasismc.modules.utils.nearbycreeperwarning.NearbyCreeperRunnable;
 import top.oasismc.modules.utils.respawn.AutoRespawn;
+import top.oasismc.modules.skull.KillSkullListener;
 
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -153,13 +157,24 @@ public final class OasisEss extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(DeathMsgListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(AttackListener.getInstance(), this);
+        Bukkit.getPluginCommand("autorespawn").setExecutor(AutoRespawn.getListener());
         Bukkit.getPluginManager().registerEvents(AutoRespawn.getListener(), this);
         Bukkit.getPluginManager().registerEvents(IgniteListener.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(EliteMobListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(AdvancementListener.getListener(), this);
         Bukkit.getPluginManager().registerEvents(new ExplodeListener(), this);
+        Bukkit.getPluginManager().registerEvents(new DragonDeadListener(), this);
+        Bukkit.getPluginManager().registerEvents(KillSkullListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(ExpChangeListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(IronGolemDeathListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(LiftMobListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(CreeperDamagedListener.getListener(), this);
+        Bukkit.getPluginManager().registerEvents(EatGlowingBerriesListener.getListener(), this);
         //Debug
         Bukkit.getPluginManager().registerEvents(ShieldListener.getInstance(), this);
+
+        Bukkit.getPluginCommand("camera").setExecutor(CameraCommand.getCommand());
+        Bukkit.getPluginCommand("camera").setTabCompleter(CameraCommand.getCommand());
     }
 
     private void regFish() {
@@ -242,21 +257,24 @@ public final class OasisEss extends JavaPlugin implements Listener {
 
     public void regAdvancements() {
         regAdvancement("join_oasis");
-        regAdvancement("kill_elite_mob");
         regAdvancement("kill_100_player");
         regAdvancement("kill_1000_player");
-        regAdvancement("kill_giant");
         regAdvancement("spyglass_at_giant");
+        regAdvancement("kill_elite_mob");
+        regAdvancement("kill_giant");
         regAdvancement("find_mansion");
+        regAdvancement("shield_attack");
         regAdvancement("use_totem_5");
         regAdvancement("use_totem_10");
         regAdvancement("kill_op");
         regAdvancement("eat_rotten_flesh");
         regAdvancement("drink_crude_potion");
+        regAdvancement("drink_fly_potion");
         regAdvancement("fishing_lighting_1");
         regAdvancement("fishing_lighting_2");
-        regAdvancement("shield_attack");
         regAdvancement("craft_sculk_sensor");
+        regAdvancement("craft_bundle");
+        regAdvancement("get_amethyst_cluster");
         regAdvancement("max_damage");
         regAdvancement("afraid_1");
         regAdvancement("afraid_4");

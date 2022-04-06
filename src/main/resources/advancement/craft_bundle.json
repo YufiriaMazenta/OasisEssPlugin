@@ -1,0 +1,35 @@
+{
+  "parent": "oasisess:craft_sculk_sensor",
+  "display": {
+    "icon": {
+      "item": "minecraft:bundle"
+    },
+    "title": {
+      "text": "&3小巧又方便"
+    },
+    "description": "&7获得收纳袋",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "imp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:bundle"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "imp"
+    ]
+  ]
+}

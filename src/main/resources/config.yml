@@ -37,6 +37,8 @@ modules:
     enable: true
   eliteMob:
     prop: 1.0
+  customLvl:
+    perLvl: 100
 
 honorSword:
   lore: '&8Honor Sword'
